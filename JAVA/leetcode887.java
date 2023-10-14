@@ -27,23 +27,39 @@ It is mcm problem with binary search
 
 class Solution {
     public int superEggDrop(int k, int n) {
+        //Initialising dp
         int[][] dp=new int[k+1][n+1];
         for(int[] i:dp)Arrays.fill(i,-1);
+        
+        // call for recursive function
         return f(k,n,dp);
     }
     int f(int k,int n,int[][] dp){
+        //Base case
         if(k<=1 || n<=1)return n;
+        //Checking in dp
         if(dp[k][n]!=-1)return dp[k][n];
+
+        //Initialising ans
         int ans=Integer.MAX_VALUE;
         int l=1,r=n;
-
+        
+        //Binary Serach On all the floors
         while(l<=r){
                 int mid=(l+r)/2;
+                //if burst then reduce count of egg and floor by 1
                 int burst=f(k-1,mid-1,dp);
+            
+                //if not burst then   egg remains same and reduce count of floor by n-mid
                 int notburst=f(k,n-mid,dp);
+            
+                //update ans in local variable
                 int temp=1+Math.max(burst,notburst);
-                if(burst<notburst)l=mid+1;
-                else{
+
+                
+                if(burst<notburst){
+                    l=mid+1;
+                }else{
                     r=mid-1;
                 }
                 ans=Math.min(ans,temp);
